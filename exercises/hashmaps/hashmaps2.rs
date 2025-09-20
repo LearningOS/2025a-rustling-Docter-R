@@ -42,7 +42,7 @@ fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
         // already present!
         match basket.get(&fruit){
             None => basket.insert(fruit,2),
-            Some(&_) => continue,
+            Some(_) => continue,
         };
     }
 }

@@ -41,18 +41,18 @@ fn build_scores_table(results: String) -> HashMap<String, Team> {
         // team_1.
         match scores.get_mut(&team_1_name) {
             None => scores.insert(team_1_name,Team { goals_scored: team_1_score, goals_conceded: team_2_score }),
-            Some(struct_Team) => {
-                struct_Team.goals_scored += team_1_score;
-                struct_Team.goals_conceded += team_2_score;
+            Some(struct_team) => {
+                struct_team.goals_scored += team_1_score;
+                struct_team.goals_conceded += team_2_score;
                 None
             },
         };
 
         match scores.get_mut(&team_2_name) {
             None => scores.insert(team_2_name,Team { goals_scored: team_2_score, goals_conceded: team_1_score }),
-            Some(struct_Team_2) => {
-                struct_Team_2.goals_scored += team_2_score;
-                struct_Team_2.goals_conceded += team_1_score;
+            Some(struct_team_2) => {
+                struct_team_2.goals_scored += team_2_score;
+                struct_team_2.goals_conceded += team_1_score;
                 None
             },
         };
