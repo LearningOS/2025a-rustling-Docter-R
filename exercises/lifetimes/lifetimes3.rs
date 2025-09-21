@@ -5,11 +5,11 @@
 // Execute `rustlings hint lifetimes3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+// DONE
 
-struct Book {
-    author: &str,
-    title: &str,
+struct Book<'a> {  // 定义结构体的生命周期 'a
+    author: &'a str,  // 两个字段的生命周期都与结构体的 'a 绑定
+    title: &'a str,
 }
 
 fn main() {
