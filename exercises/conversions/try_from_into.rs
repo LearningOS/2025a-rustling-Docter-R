@@ -27,7 +27,7 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
+// DONE
 
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
@@ -41,6 +41,12 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (r, g, b) = tuple;
+        // 检查每个值是否在 0..=255 范围内
+        let red = r.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let green = g.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let blue = b.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        Ok(Color { red, green, blue })
     }
 }
 
@@ -48,6 +54,17 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        // 1. 解构数组：获取 R、G、B 三个通道的值（数组固定长度 3，编译时保证不会越界）
+        let [r, g, b] = arr;
+
+        // 2. 逐个校验并转换：i16 -> u8，超出 0..=255 则返回错误
+        // try_into() 自动检查范围，失败时返回标准库错误；map_err 映射为自定义错误
+        let red = r.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let green = g.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let blue = b.try_into().map_err(|_| IntoColorError::IntConversion)?;
+
+        // 3. 所有值合法，返回 Color 实例
+        Ok(Color { red, green, blue })
     }
 }
 
@@ -55,6 +72,18 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        // 首先检查切片长度是否为3，否则返回BadLen错误
+        let &[r, g, b] = slice else {
+            return Err(IntoColorError::BadLen); // else 块必须终止当前函数（返回/ panic）
+        };
+
+
+        // 转换并检查每个值是否在有效范围内
+        let red = r.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let green = g.try_into().map_err(|_| IntoColorError::IntConversion)?;
+        let blue = b.try_into().map_err(|_| IntoColorError::IntConversion)?;
+
+        Ok(Color { red, green, blue })
     }
 }
 
